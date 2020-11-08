@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Editace zboží</title>
+        <link th:insert="fragments/links"></link> 
+    </head>
+    <body>
+        
+        <div th:insert="fragments/logo"></div>
+        <div th:insert="fragments/header :: header"></div>
+        
+        <div class="container">
+            
+        <div>
+            <h2>Editace zboží</h2>
+        </div>
+            <br>    
+        
+        
+        <form action="#" th:action="@{/admin/zbozi/editace-zbozi/{id}(id=${productId})}" th:object="${productForm}" method="post">
+            Nazev: <input type="text" th:classappend="${#fields.hasErrors('name')} ? is-invalid" th:field="*{name}" /><br />
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div><br>
+            
+            Cena bez DPH: <input type="text" th:classappend="${#fields.hasErrors('priceWithoutTax')} ? is-invalid" th:field="*{priceWithoutTax}" /><br />
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('priceWithoutTax')}" th:errors="*{priceWithoutTax}"></div><br>
+            
+            Cena s DPH: <input type="text" th:classappend="${#fields.hasErrors('priceWithTax')} ? is-invalid" th:field="*{priceWithTax}" /><br />
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('priceWithTax')}" th:errors="*{priceWithTax}"></div><br>
+            
+            Popis: <input type="text" th:classappend="${#fields.hasErrors('description')} ? is-invalid" th:field="*{description}" /><br />
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div><br>
+            
+            <div class="form-group">
+                <label for="productForm">Vyber znacky</label>
+                <select class="form-control" id="productForm" th:field="*{brandId}">
+                  <th:each th:each="brand : ${brands}">
+                      <option th:text="${brand.name}" th:value="${brand.id}"></option>
+                  </th:each>  
+                </select>
+            </div><br>
+            
+            <div class="form-group">
+                <label for="productForm">Vyber kategorie</label>
+                <select class="form-control" id="productForm" th:field="*{categoryId}">
+                  <th:each th:each="category : ${categories}">
+                      <option th:text="${category.name}" th:value="${category.id}"></option>
+                  </th:each>  
+                </select>
+            </div><br>
+            
+            <input type="submit" value="Submit" />
+            
+        </form>
+            
+        </div>    
+    </body>
+</html>

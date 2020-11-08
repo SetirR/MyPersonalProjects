@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Přidáni značky</title>
+        <link th:insert="fragments/links"></link> 
+    </head>
+    <body>
+        
+        <div th:insert="fragments/logo"></div>
+        <div th:insert="fragments/header :: header"></div>
+        
+        <div class="container">
+            
+            <div>
+                <h2>Přidat novou značku</h2>
+            </div>    
+            
+            <form action="#" th:action="@{/admin/znacky/pridat-znacku}" th:object="${brandForm}" method="post">
+                name: <input type="text" th:classappend="${#fields.hasErrors('name')} ? is-invalid" th:field="*{name}" /><br />            
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                <input type="submit" value="Submit" />
+                
+                <!-- Stačí takto, nebo tam musím přidat i nějakou vyloženě metodu na button?-->
+                <script type="text/javascript" th:src="@{/js/preventmultipleloading.js}"></script>
+                
+                <div>
+                    
+                </div>
+                
+            </form>
+        </div>    
+    </body>
+</html>

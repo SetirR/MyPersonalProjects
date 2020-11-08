@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Kontakt</title>
+        <link th:insert="fragments/links"></link> 
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>    
+    </head>
+    <body>
+        <div th:insert="fragments/logo"></div>
+        <div th:insert="fragments/headerEshop :: header"></div>
+        
+        
+        
+        <div class="container">
+            
+        <div>
+            <h1>Kontakt</h1>
+            <ul>
+                <li>Robin Setinský</li>
+                <li>Milan Sadílek</li>
+                <li>Michal Krejčí</li>
+                                    
+            </ul>
+        </div>
+            
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2608.496407136828!2d16.689193115812362!3d49.17216628651549!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4712eadfdd850a2d%3A0x5af124b2bed7e8ea!2sBu%C4%8Dkova%204%2C%20627%2000%20Slatina!5e0!3m2!1scs!2scz!4v1597939550968!5m2!1scs!2scz" width="100%" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+            
+        <div th:if="${message}">
+            <div th:text="${message}"></div><br/>
+        </div>
+        
+        <form th:action="@{/kontakty}" th:object="${mailForm}" method="post">
+
+            <label>E-mail</label>
+            <input class="form-control" th:classappend="${#fields.hasErrors('email')} ? is-invalid" type="email" th:field="*{email}"/><br/>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div><br/>
+
+            <label>Předmět</label>
+            <input class="form-control" th:classappend="${#fields.hasErrors('subject')} ? is-invalid" type="text" th:field="*{subject}"/><br/>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('subject')}" th:errors="*{subject}"></div><br/>
+
+            <label>Zpráva</label><br/>
+            <textarea class="form-control" th:classappend="${#fields.hasErrors('message')} ? is-invalid" th:field="*{message}"/><br/>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('message')}" th:errors="*{message}"></div><br/>
+
+            <div class="g-recaptcha" th:attr="data-sitekey=${@captchaSettings.site}"></div>
+
+            <button class="btn btn-primary" type="submit">Poslat</button>
+        </form>
+        </div>
+            
+    </body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Sortiment zboží</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <link th:href="@{/css/custom.css}" rel="stylesheet">
+    </head>
+    <body>
+        <div th:insert="fragments/logo"></div>
+        <div th:insert="fragments/headerEshop :: header"></div>
+        
+        
+        
+        
+        
+        <div class="container">
+             
+        <h1 th:text="${product.name}"></h1>
+        
+        <div>
+            <p th:text="${product.description}"></p>
+        </div>
+        
+        <a th:href="@{/kosik/add/{id}(id=${product.id})}" class="btn btn-primary">Do Kosiku</a>
+        
+    </body>
+</html>

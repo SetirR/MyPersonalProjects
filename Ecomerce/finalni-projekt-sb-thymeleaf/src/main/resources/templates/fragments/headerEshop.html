@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary" th:fragment="header">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                               href="/zbozi"
+                               th:classappend="${#request.requestURI.startsWith('/zbozi')} ? active">Nabídka zboží</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                               href="/kontakty"
+                               th:classappend="${#request.requestURI.startsWith('/kontakty')} ? active">Kontakty</a>
+                        </li>
+                        <li class="nav-item">
+                            <div sec:authorize="hasAuthority('ADMIN')">
+                                <a class="nav-link" href="/admin">Admin </a>
+                            </div>
+                        </li>
+                    </ul>
+                    
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <div sec:authorize="isAuthenticated()">
+                                <a class="nav-item nav-link" href="/kosik">Kosik</a>
+                            </div>
+                        </li> 
+                        <li class="nav-item">
+                            <div sec:authorize="isAnonymous()">
+                                <a class="nav-item nav-link" href="/login">Login</a>
+                            </div>
+                        </li>    
+                        <li class="nav-item">
+                            <div sec:authorize="isAuthenticated()">
+                                <a class="nav-item nav-link" href="/logout">Logout: <span sec:authentication="name"></span></a>
+                            </div>
+                        </li>   
+                    </ul>
+        </nav>
+    </body>
+</html>

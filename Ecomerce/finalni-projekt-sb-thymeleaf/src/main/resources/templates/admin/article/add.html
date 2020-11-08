@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Přidáni zboží</title>
+        <link th:insert="fragments/links"></link> 
+    </head>
+    <body>
+        
+        <div th:insert="fragments/logo"></div>
+        <div th:insert="fragments/header :: header"></div>
+        
+        <div class="container">
+            
+            <div>
+                <h2>Přidat nové zboží</h2>
+            </div>    
+            
+            <form action="#" th:action="@{/admin/zbozi/pridat-zbozi}" th:object="${productForm}" method="post">
+            Nazev: <input type="text" th:classappend="${#fields.hasErrors('name')} ? is-invalid" th:field="*{name}" /><br />
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div><br>
+            
+            Cena s DPH: <input type="text" th:classappend="${#fields.hasErrors('price')} ? is-invalid" th:field="*{price}" /><br />
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div><br>
+            
+            Popis: <input type="text" th:classappend="${#fields.hasErrors('description')} ? is-invalid" th:field="*{description}" /><br />
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div><br>
+            
+            <div class="form-group">
+                <label for="productForm">Vyber znacky</label>
+                <select class="form-control" id="productForm" th:field="*{brandId}">
+                  <th:each th:each="brand : ${brands}">
+                      <option th:text="${brand.name}" th:value="${brand.id}"></option>
+                  </th:each>  
+                </select>
+            </div><br>
+            
+            <div class="form-group">
+                <label for="productForm">Vyber kategorie</label>
+                <select class="form-control" id="productForm" th:field="*{categoryId}">
+                  <th:each th:each="category : ${categories}">
+                      <option th:text="${category.name}" th:value="${category.id}"></option>
+                  </th:each>  
+                </select>
+            </div><br>
+                
+            <script type="text/javascript" th:src="@{/js/preventmultipleloading.js}"></script>    
+            
+            <input type="submit" value="Submit" />
+            
+        </form>
+        </div>    
+    </body>
+</html>

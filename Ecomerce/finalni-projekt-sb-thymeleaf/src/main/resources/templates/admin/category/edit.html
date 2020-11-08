@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Editace kategorie</title>
+        <link th:insert="fragments/links"></link> 
+    </head>
+    <body>
+        
+        <div th:insert="fragments/logo"></div>
+        <div th:insert="fragments/header :: header"></div>
+        
+        
+        <div class="container">
+        
+        <div>
+            <h2>Editace kategorie</h2>
+        </div>
+            <br>
+        
+        <form action="#" th:action="@{/admin/kategorie/editace-kategorie/{id}(id=${categoryId})}" th:object="${categoryForm}" method="post">
+            name: <input type="text" th:classappend="${#fields.hasErrors('name')} ? is-invalid" th:field="*{name}" /><br />
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div><br>
+            <input type="submit" value="Submit" />
+        </form>
+            
+        </div>    
+    </body>
+</html>

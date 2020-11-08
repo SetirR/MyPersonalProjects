@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Sortiment zboží</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <link th:href="@{/css/custom.css}" rel="stylesheet">
+    </head>
+    <body>
+        <div th:insert="fragments/logo"></div>
+        <div th:insert="fragments/headerEshop :: header"></div>
+        
+        
+        
+        
+        
+        <div class="container">
+        
+        <div th:insert="fragments/messages"></div>
+            
+        <h1>Zboží</h1>
+        
+        <div>
+            <form th:action="@{/zbozi}" th:object="${productFormFiltred}" method="post">
+                <div>
+                    <div>
+                        <input type="text" th:field="*{name}" placeholder="Název"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Vyber znacky</label>
+                        <select class="form-control" id="productFormFiltred" th:field="*{brandId}">
+                            <option value="">Vyberte značku...</option>
+                            <th:each th:each="brand : ${brands}">
+                                <option th:text="${brand.name}" th:value="${brand.id}"></option>
+                            </th:each>
+                        </select>
+                    </div><br>
+
+                    <div class="form-group">
+                        <label>Vyber kategorie</label>
+                        <select class="form-control" id="productFormFiltred" th:field="*{categoryId}">
+                            <option value="">Vyberte kategorii...</option>
+                            <th:each th:each="category : ${categories}">
+                                <option th:text="${category.name}" th:value="${category.id}"></option>
+                            </th:each>
+                        </select>
+                    </div><br>
+
+                    <div>
+                        <button type="submit">Filtrovat</button>
+                        <a th:if="${showResetButton}" th:href="@{/zbozi}"><button type="button">Reset</button></a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <th:foreach th:each="product: ${page.content}">
+            <div class="card">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title" th:text ="${product.name}"></h5>
+                  <p class="card-text" th:text="${product.description}"></p>
+                  <a th:href="@{/zbozi/detail/{id}(id=${product.id})}" class="btn btn-primary">Detail</a>
+                  <a th:href="@{/kosik/add/{id}(id=${product.id})}" class="btn btn-primary">Do Kosiku</a>
+                </div>
+            </div>
+        </th:foreach>
+        
+        <div th:if="${page.totalPages > 1}">
+                <div>
+                    <nav>
+                        <ul class="pagination">
+                            <li class="page-item"
+                                th:each="pageIter: ${#numbers.sequence(1, page.totalPages)}"
+                                th:classappend="${pageIter - 1 == page.number} ? active">
+                                <a class="page-link"
+                                   th:text="${pageIter}"
+                                   th:href="@{/zbozi/(page=${pageIter - 1},size=${page.size},sort=${sort},name=${productFormFiltred.name},brandId=${productFormFiltred.brandId},categoryId=${productFormFiltred.categoryId})}">
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        
+        </div>
+        
+        
+    </body>
+</html>

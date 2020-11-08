@@ -1,0 +1,14 @@
+
+.logo {
+    display: block;
+    margin: 0 auto;
+    width: 250px;
+    height: 150px;
+}
+
+.card{
+    display: inline-block;
+    margin: 30px;
+    width: 18rem;
+}
+

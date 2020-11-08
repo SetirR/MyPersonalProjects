@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>IT STEP Electronics</title>
+        <link th:insert="fragments/links"></link>      
+    </head>
+    <body>
+        <div th:insert="fragments/logo"></div>
+        <div th:insert="fragments/header :: header"></div>
+        
+        <div class="container">
+             
+        <h1>Zboží</h1>
+        
+        <div th:insert="fragments/messages"></div>
+        
+        <a href="/admin/zbozi/pridat-zbozi" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Přidat zboží</a>
+
+        <div>
+            <h2>Filtrování</h2>
+            <form th:action="@{/admin/zbozi/zobrazit}" th:object="${productFormFiltred}" method="post">
+                <div>
+                    <div>
+                        <input type="text" th:field="*{name}" placeholder="Název"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Vyber znacky</label>
+                        <select class="form-control" id="productFormFiltred" th:field="*{brandId}">
+                            <option value="">Vyberte značku...</option>
+                            <th:each th:each="brand : ${brands}">
+                                <option th:text="${brand.name}" th:value="${brand.id}"></option>
+                            </th:each>
+                        </select>
+                    </div><br>
+
+                    <div class="form-group">
+                        <label>Vyber kategorie</label>
+                        <select class="form-control" id="productFormFiltred" th:field="*{categoryId}">
+                            <option value="">Vyberte kategorii...</option>
+                            <th:each th:each="category : ${categories}">
+                                <option th:text="${category.name}" th:value="${category.id}"></option>
+                            </th:each>
+                        </select>
+                    </div><br>
+
+                    <div>
+                        <button type="submit">Filtrovat</button>
+                        <a th:if="${showResetButton}" th:href="@{/admin/zbozi/zobrazit}"><button type="button">Reset</button></a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+            <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Id</th>
+                <th scope="col">Name
+                <a th:href="@{/admin/zbozi/zobrazit/(sort=${'name,asc'},name=${productFormFiltred.name},brandId=${productFormFiltred.brandId},categoryId=${productFormFiltred.categoryId})}"><i class="fas fa-arrow-up"></i></a>
+                <a th:href="@{/admin/zbozi/zobrazit/(sort=${'name,desc'},name=${productFormFiltred.name},brandId=${productFormFiltred.brandId},categoryId=${productFormFiltred.categoryId})}"><i class="fas fa-arrow-down"></i></a>
+                </th>
+                <th scope="col">Cena s DPH
+                <a th:href="@{/admin/zbozi/zobrazit/(sort=${'price,asc'},name=${productFormFiltred.name},brandId=${productFormFiltred.brandId},categoryId=${productFormFiltred.categoryId})}"><i class="fas fa-arrow-up"></i></a>
+                <a th:href="@{/admin/zbozi/zobrazit/(sort=${'price,desc'},name=${productFormFiltred.name},brandId=${productFormFiltred.brandId},categoryId=${productFormFiltred.categoryId})}"><i class="fas fa-arrow-down"></i></a>
+                </th>
+                <th scope="col">Znacka
+                <a th:href="@{/admin/zbozi/zobrazit/(sort=${'brand.name,asc'},name=${productFormFiltred.name},brandId=${productFormFiltred.brandId},categoryId=${productFormFiltred.categoryId})}"><i class="fas fa-arrow-up"></i></a>
+                <a th:href="@{/admin/zbozi/zobrazit/(sort=${'brand.name,desc'},name=${productFormFiltred.name},brandId=${productFormFiltred.brandId},categoryId=${productFormFiltred.categoryId})}"><i class="fas fa-arrow-down"></i></a>    
+                </th>
+                <th scope="col">Kategorie
+                <a th:href="@{/admin/zbozi/zobrazit/(sort=${'category.name,asc'},name=${productFormFiltred.name},brandId=${productFormFiltred.brandId},categoryId=${productFormFiltred.categoryId})}"><i class="fas fa-arrow-up"></i></a>
+                <a th:href="@{/admin/zbozi/zobrazit/(sort=${'category.name,desc'},name=${productFormFiltred.name},brandId=${productFormFiltred.brandId},categoryId=${productFormFiltred.categoryId})}"><i class="fas fa-arrow-down"></i></a>     
+                </th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="product: ${page.content}">
+                <th scope="row"></th>
+                <td th:text="${product.id}"/>
+                <td th:text="${product.name}"/>
+                <td th:text="${product.price}"/>
+                <td th:text="${product.brand.name}"/>
+                <td th:text="${product.category.name}"/>
+                <td><a class="btn btn-primary" th:href="@{/admin/zbozi/editace-zbozi/{id}(id=${product.id})}" role="button">Edit</a></td>
+                <td><a class="btn btn-danger" th:href="@{/admin/zbozi/smazani-zbozi/{id}(id=${product.id})}" role="button" onclick=" return confirm('Určitě to chceš smazat?')">Delete</a></td>
+            </tbody>
+        </table>
+        
+            <div th:if="${page.totalPages > 1}">
+                <div>
+                    <nav>
+                        <ul class="pagination">
+                            <li class="page-item"
+                                th:each="pageIter: ${#numbers.sequence(1, page.totalPages)}"
+                                th:classappend="${pageIter - 1 == page.number} ? active">
+                                <a class="page-link"
+                                   th:text="${pageIter}"
+                                   th:href="@{/admin/zbozi/zobrazit/(page=${pageIter - 1},size=${page.size},sort=${sort},name=${productFormFiltred.name},brandId=${productFormFiltred.brandId},categoryId=${productFormFiltred.categoryId})}">
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

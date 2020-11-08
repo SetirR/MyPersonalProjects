@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>IT STEP Electronics</title>
+        <link th:insert="fragments/links"></link>   
+    </head>
+    <body>
+        <div th:insert="fragments/logo"></div>
+        <div th:insert="fragments/header :: header"></div>
+        
+        
+        <div class="container">
+ 
+        <h1> Objednavky </h1>        
+        
+        <form th:action="@{/admin/objednavky/zobrazit}" th:object="${orderFormFiltred}" method="post">
+            <div>
+                <div class="form-group">
+                    <label>Vyber stav</label>
+                    <select class="form-control" id="orderFormFiltred" th:field="*{orderStatusId}">
+                        <option value="">Vyberte stav...</option>
+                        <th:each th:each="orderStatus : ${orderStatus}">
+                            <option th:text="${orderStatus.name}" th:value="${orderStatus.id}"></option>
+                        </th:each>
+                    </select>
+                </div><br>
+
+                <div class="form-group">
+                    <label>Vyber uzivatele</label>
+                    <select class="form-control" id="orderFormFiltred" th:field="*{userId}">
+                        <option value="">Vyberte uzivatele...</option>
+                        <th:each th:each="user : ${users}">
+                            <option th:text="${user.username}" th:value="${user.id}"></option>
+                        </th:each>
+                    </select>
+                </div><br>
+
+                <div>
+                    <button type="submit">Filtrovat</button>
+                    <a th:if="${showResetButton}" th:href="@{/admin/objednavky/zobrazit}"><button type="button">Reset</button></a>
+                </div>
+            </div>
+        </form>
+        
+        <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Status
+                <a th:href="@{/admin/objednavky/zobrazit/(sort=${'orderStatus.name,asc'},orderStatusId=${orderFormFiltred.orderStatusId},userId=${orderFormFiltred.userId})}"><i class="fas fa-arrow-up"></i></a>
+                <a th:href="@{/admin/objednavky/zobrazit/(sort=${'orderStatus.name,desc'},orderStatusId=${orderFormFiltred.orderStatusId},userId=${orderFormFiltred.userId})}"><i class="fas fa-arrow-down"></i></a>
+                </th>
+                <th scope="col">Uzivatel
+                <a th:href="@{/admin/objednavky/zobrazit/(sort=${'user.username,asc'},orderStatusId=${orderFormFiltred.orderStatusId},userId=${orderFormFiltred.userId})}"><i class="fas fa-arrow-up"></i></a>
+                <a th:href="@{/admin/objednavky/zobrazit/(sort=${'user.username,desc'},orderStatusId=${orderFormFiltred.orderStatusId},userId=${orderFormFiltred.userId})}"><i class="fas fa-arrow-down"></i></a>
+                </th>
+                <th scope="col">Akce
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="order: ${page.content}">
+                <td th:text="${order.id}"/>
+                <td th:text="${order.orderStatus.name}"/>
+                <td th:text="${order.user.username}"/>
+                <td> 
+                    <a th:href="@{/admin/objednavky/potvrdit/{id}(id=${order.id})}"><i class="fas fa-check"></i></a>
+                    <a th:href="@{/admin/objednavky/zrusit/{id}(id=${order.id})}"><i class="fas fa-times"></i></a>
+                    <a th:href="@{/admin/objednavky/smazat/{id}(id=${order.id})}" onclick=" return confirm('Určitě to chceš smazat?')" ><i class="fas fa-trash-alt"></i></a>
+                </td>
+            </tbody>
+          </table>
+
+        <div th:if="${page.totalPages > 1}">
+                <div>
+                    <nav>
+                        <ul class="pagination">
+                            <li class="page-item"
+                                th:each="pageIter: ${#numbers.sequence(1, page.totalPages)}"
+                                th:classappend="${pageIter - 1 == page.number} ? active">
+                                <a class="page-link"
+                                   th:text="${pageIter}"
+                                   th:href="@{/admin/objednavky/zobrazit/(page=${pageIter - 1},size=${page.size},sort=${sort},orderStatusId=${orderFormFiltred.orderStatusId},userId=${orderFormFiltred.userId})}">
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+          
+        </div>
+        
+    </body>
+</html>

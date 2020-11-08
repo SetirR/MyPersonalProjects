@@ -1,0 +1,10 @@
+DROP TABLE order_status;
+DROP TABLE order_product;
+DROP TABLE `order`;
+DROP TABLE user_authority;
+DROP TABLE cart_product;
+DROP TABLE cart;
+DROP TABLE `user`;
+DROP TABLE product;
+DROP TABLE brand;
+DROP TABLE category;

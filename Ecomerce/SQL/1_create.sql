@@ -1,0 +1,91 @@
+CREATE TABLE IF NOT EXISTS category
+(
+	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
+
+
+CREATE TABLE IF NOT EXISTS brand 
+(
+	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS product
+(
+	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL UNIQUE,
+    price NUMERIC NOT NULL,
+    description VARCHAR(10000),
+    enabled BOOLEAN NOT NULL,
+    brand_id INT NOT NULL,
+    category_id INT NOT NULL,
+    FOREIGN KEY (brand_id) REFERENCES brand (id),
+    FOREIGN KEY (category_id) REFERENCES category(id)
+);
+
+
+CREATE TABLE IF NOT EXISTS `user`
+(
+	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL UNIQUE,
+    enabled BOOLEAN  NOT NULL
+);
+
+
+CREATE TABLE IF NOT EXISTS user_authority
+(
+	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    `role` VARCHAR(100) NOT NULL,
+    user_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES `user`(id)
+);
+
+
+CREATE TABLE IF NOT EXISTS cart
+(
+	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES `user`(id)
+);
+
+CREATE TABLE IF NOT EXISTS cart_product
+(
+	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    product_id INT NOT NULL,
+    amount INT NOT NULL,
+    price NUMERIC NOT NULL,
+    cart_id INT,
+    FOREIGN KEY (cart_id) REFERENCES cart(id),
+    FOREIGN KEY (product_id) REFERENCES product(id)
+);
+
+CREATE TABLE IF NOT EXISTS order_status 
+(
+	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
+
+CREATE TABLE IF NOT EXISTS `order`
+(
+	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    order_status_id INT NOT NULL,
+    user_id INT NOT NULL,
+    FOREIGN KEY(order_status_id) REFERENCES order_status(id),
+    FOREIGN KEY (user_id) REFERENCES `user`(id)
+);
+
+CREATE TABLE IF NOT EXISTS order_product
+(
+	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    product_id INT NOT NULL,
+    amount INT NOT NULL,
+    price NUMERIC NOT NULL,
+    order_id INT,
+    FOREIGN KEY (order_id) REFERENCES `order`(id),
+    FOREIGN KEY (product_id) REFERENCES product(id)
+);
+

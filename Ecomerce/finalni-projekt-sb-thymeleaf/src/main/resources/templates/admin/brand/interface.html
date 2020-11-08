@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>IT STEP Electronics</title>
+        <link th:insert="fragments/links"></link>  
+    </head>
+    <body>
+        <div th:insert="fragments/logo"></div>
+        <div th:insert="fragments/header :: header"></div>
+        
+        <div class="container">
+        
+        <h1> Naše značky </h1>
+
+        <div th:insert="fragments/messages"></div>
+        
+        <a href="/admin/znacky/pridat-znacku" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Přidat značku</a>
+        
+        <br>
+            
+        <div>
+            <h2>Filtrování</h2>
+            <form th:action="@{/admin/znacky/zobrazit}" th:object="${brandFormFiltred}" method="post">
+                <div>
+                    <div>
+                        <input type="text" th:field="*{name}" placeholder="Název"/>
+                    </div>
+                    <div>
+                        <button type="submit">Filtrovat</button>
+                        <a th:if="${showResetButton}" th:href="@{/admin/znacky/zobrazit}"><button type="button">Reset</button></a>
+                    </div>                        
+                </div>
+            </form>
+        </div>    
+        
+        <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Id</th>
+                <th scope="col">Name
+                <a th:href="@{/admin/znacky/zobrazit/(sort=${'name,asc'},name=${brandFormFiltred.name})}"> <i class="fas fa-arrow-up"></i></a>
+                <a th:href="@{/admin/znacky/zobrazit/(sort=${'name,desc'},name=${brandFormFiltred.name})}"> <i class="fas fa-arrow-down"></i></a>
+                </th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="brand: ${page.content}">
+                <th scope="row"></th>
+                <td th:text="${brand.id}"/>
+                <td th:text="${brand.name}"/>
+                <td><a class="btn btn-primary" th:href="@{/admin/znacky/editace-znacek/{id}(id=${brand.id})}" role="button">Edit</a></td>
+                <td><a class="btn btn-danger" th:href="@{/admin/znacky/smazani-znacky/{id}(id=${brand.id})}" role="button" onclick=" return confirm('Určitě to chceš smazat?')">Delete</a></td>
+            </tbody>
+          </table>
+            
+            <div th:if="${page.totalPages > 1}">
+                <div>
+                    <nav>
+                        <ul class="pagination">
+                            <li class="page-item"
+                                th:each="pageIter: ${#numbers.sequence(1, page.totalPages)}"
+                                th:classappend="${pageIter - 1 == page.number} ? active">
+                                <a class="page-link"
+                                   th:text="${pageIter}"
+                                   th:href="@{/admin/znacky/zobrazit/(page=${pageIter - 1},size=${page.size},sort=${sort},name=${brandFormFiltred.name})}">
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </body>
+</html>

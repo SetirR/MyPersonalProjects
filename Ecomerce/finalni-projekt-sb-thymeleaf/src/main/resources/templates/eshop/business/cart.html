@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Kontakt</title>
+        <link th:insert="fragments/links"></link> 
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>    
+    </head>
+    <body>
+        <div th:insert="fragments/logo"></div>
+        <div th:insert="fragments/headerEshop :: header"></div>
+        
+        
+        
+        <div class="container">
+            
+            <div th:insert="fragments/messages"></div>
+            
+            <div>
+                <h1>Kosik</h1>
+            </div>
+            
+            
+            
+            <table class="table">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">Nazev</th>
+                    <th scope="col">Mnozstvi</th> 
+                    <th scope="col">Akce</th> 
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="cartProduct : ${cartProducts}">
+                    <td th:text="${cartProduct.product.name}"/>
+                    <td th:text="${cartProduct.amount}"/>
+                    <td>   
+                        <a th:href="@{/kosik/editup/{id}(id=${cartProduct.id})}"><i class="fas fa-plus"></i></a>
+                        <a th:href="@{/kosik/editdown/{id}(id=${cartProduct.id})}"><i class="fas fa-minus"></i></a>
+                        <a th:href="@{/kosik/delete/{id}(id=${cartProduct.id})}"><i class="fas fa-trash-alt" onclick=" return confirm('Určitě to chceš smazat?')"></i></a>
+                    </td>
+                </tbody>
+            </table>
+            
+            
+            <a th:href="@{/objednavka/odeslat/{id}(id=${cart.id})}"><button type="button" class="btn btn-primary btn-lg btn-block">Odeslat objednavku</button></a>
+        
+        </div>    
+    </body>
+</html>

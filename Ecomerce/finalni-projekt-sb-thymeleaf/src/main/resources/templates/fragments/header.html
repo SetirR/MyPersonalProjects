@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">       
+</head>
+<body>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" th:fragment="header">
+            <ul class="navbar-nav mr-auto">
+               <li class="nav-item">
+                    <a class="nav-link" 
+                       href="/admin/zbozi/zobrazit"
+                       th:classappend="${#request.requestURI.startsWith('/admin/zbozi')} ? active" >Zboží</a>
+               </li>
+                <li class="nav-item">    
+                    <a class="nav-link"
+                       href="/admin/objednavky/zobrazit"
+                       th:classappend="${#request.requestURI.startsWith('/admin/objednavky')} ? active" >Objednávky</a>
+                </li>    
+                <li class="nav-item">    
+                    <a class="nav-link" 
+                       href="/admin/znacky/zobrazit"
+                       th:classappend="${#request.requestURI.startsWith('/admin/znacky')} ? active" >Značky</a>
+                </li>
+                <li class="nav-item">    
+                    <a class="nav-link" 
+                       href="/admin/kategorie/zobrazit"
+                       th:classappend="${#request.requestURI.startsWith('/admin/kategorie')} ? active">Kategorie</a>
+                </li>
+                <li class="nav-item">    
+                    <a class="nav-link" 
+                       href="/admin/uzivatele/zobrazit"
+                       th:classappend="${#request.requestURI.startsWith('/admin/uzivatele')} ? active">Uživatelé</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Eshop</a>
+                </li>    
+                <li class="nav-item">
+                    <div sec:authorize="isAuthenticated()">
+                        <a class="nav-link" href="/logout">Logout: <span sec:authentication="name"></span></a>
+                    </div>
+                </li>     
+            </ul>
+    </nav>
+</body>
+</html>
