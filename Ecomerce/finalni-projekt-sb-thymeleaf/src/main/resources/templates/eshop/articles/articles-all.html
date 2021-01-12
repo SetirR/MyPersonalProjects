@@ -61,10 +61,8 @@ and open the template in the editor.
         
         <th:foreach th:each="product: ${page.content}">
             <div class="card">
-                <img src="..." class="card-img-top" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title" th:text ="${product.name}"></h5>
-                  <p class="card-text" th:text="${product.description}"></p>
+                  <h5 class="card-title" th:text ="${product.name}"></h5>
                   <a th:href="@{/zbozi/detail/{id}(id=${product.id})}" class="btn btn-primary">Detail</a>
                   <a th:href="@{/kosik/add/{id}(id=${product.id})}" class="btn btn-primary">Do Kosiku</a>
                 </div>
